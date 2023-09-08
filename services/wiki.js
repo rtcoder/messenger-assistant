@@ -1,9 +1,9 @@
 const wiki = require('wikipedia');
 
 module.exports = {
-    wiki_search: async (query) => {
+    wiki_search: async (msg) => {
         try {
-            const search = query.replaceAll('wiki:', '')
+            const search = msg.body.replaceAll('wiki:', '')
             wiki.setLang('pl');
             const page = await wiki.page(search);
             return await page.intro();

@@ -1,11 +1,11 @@
-const youtubesearchapi = require('youtube-search-api');
+const ytSearchApi = require('youtube-search-api');
 module.exports = {
-    yt_search: async (query) => {
+    yt_search: async (msg) => {
 
-        const ytSearch = query.replaceAll('youtube:', '')
+        const ytSearch = msg.body.replaceAll('youtube:', '')
             .replaceAll('yt:', '');
 
-        return await youtubesearchapi.GetListByKeyword(ytSearch, false, 5)
+        return await ytSearchApi.GetListByKeyword(ytSearch, false, 5)
             .then(r => {
                 return r.items.map(item => {
                     const link = item.type === 'channel'

@@ -14,10 +14,13 @@ module.exports = (api, message) => {
     }
 
     const content = removeBotMentionFromContent(message.body);
-
+    const formattedMessage = {
+        ...message,
+        body: content,
+    };
     // console.log(message);
-    const service = serviceGuesser(content);
-    service(content).then(msg => {
+    const service = serviceGuesser(formattedMessage);
+    service(formattedMessage).then(msg => {
         sendMsg(api, message.threadID, msg);
     });
 
@@ -28,6 +31,12 @@ function sendMsg(api, threadID, msg) {
 }
 
 function shouldSendMessage(msg) {
+    console.log(msg);
+    if (config.allow_private_messages
+        && msg.threadID === msg.senderID
+        && msg.body) {
+        return true;
+    }
     return !(!msg.threadID
         || !msg.body
         || !THREADS_IDS.includes(msg.threadID)
@@ -41,6 +50,5 @@ function removeBotMentionFromContent(content) {
     return content
         .replaceAll(`@${nickname}`, '')
         .replaceAll(`@${firstName} ${lastName}`, '')
-        .replaceAll(`@${firstName}`, '')
-        .toLocaleLowerCase();
+        .replaceAll(`@${firstName}`, '');
 }

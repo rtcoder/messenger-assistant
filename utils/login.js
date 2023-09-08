@@ -1,8 +1,7 @@
-const {readFileSync} = require('fs');
 const login = require('facebook-chat-api');
-
+const getConfig = require('./config');
 const credential = {
-    appState: JSON.parse(readFileSync('../config/app-state.json', 'utf-8')).cookies,
+    appState: getConfig('app-state').cookies,
 };
 
 module.exports = (callback) => {

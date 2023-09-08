@@ -1,4 +1,4 @@
 const {readFileSync} = require('fs');
 module.exports = (file) => {
-    return JSON.parse(readFileSync(`../db/${file}.json`, 'utf-8'));
+    return JSON.parse(readFileSync(`${__dirname}/../db/${file}.json`, 'utf-8'));
 };
