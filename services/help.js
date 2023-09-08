@@ -6,6 +6,13 @@ Oznacz bota przy pomocy @
 Pomoc:
 [help]
 
+Oznaczenie członków grupy:
+[everyone] - wszyscy
+[call_all] - wszyscy
+[call_boys] - mężczyźni
+[call_girls] - kobiety
+[call_admin] - administratorzy
+
 Youtube: 
 yt:szukana fraza
 youtube:szukana fraza
@@ -32,6 +39,8 @@ translate_de:Tekst
 lub odpisz na wiadomość oznaczając bota i wpisując
 translate_[język]:
 
+Zmiana nazwy grupy:
+title:Nowa nazwa
             `);
         });
     },

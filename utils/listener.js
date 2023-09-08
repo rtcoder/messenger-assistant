@@ -5,7 +5,6 @@ module.exports = (api) => {
         listenEvents: true,
         selfListen: true,
     });
-
     api.listenMqtt((err, message) => {
         botResponse(api, message);
     });

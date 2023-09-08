@@ -1,6 +1,7 @@
 const serviceGuesser = require('../services/_service-guess');
 const getConfig = require('./config');
 const getDb = require('./db');
+const sendMsg = require('./send-msg');
 
 const config = getConfig('config');
 const botInfo = getDb('bot-info');
@@ -20,15 +21,13 @@ module.exports = (api, message) => {
     };
     // console.log(message);
     const service = serviceGuesser(formattedMessage);
-    service(formattedMessage).then(msg => {
-        sendMsg(api, message.threadID, msg);
+    service(formattedMessage, api).then(msg => {
+        if (msg !== null) {
+            sendMsg(api, message.threadID, msg);
+        }
     });
 
 };
-
-function sendMsg(api, threadID, msg) {
-    api.sendMessage(`${BOT_PREFIX}${msg}`, threadID);
-}
 
 function shouldSendMessage(msg) {
     console.log(msg);
