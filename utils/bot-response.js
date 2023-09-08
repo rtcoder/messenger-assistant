@@ -1,7 +1,9 @@
 const serviceGuesser = require('../services/_service-guess');
-const {readFileSync} = require('fs');
+const getConfig = require('./config');
+const getDb = require('./db');
 
-const config = JSON.parse(readFileSync('../config/config.json', 'utf-8'));
+const config = getConfig('config');
+const botInfo = getDb('bot-info');
 const BOT_PREFIX = config.bot_response_prefix;
 const BOT_USER_ID = config.bot_user_id;
 const THREADS_IDS = config.threads_ids;
@@ -35,9 +37,10 @@ function shouldSendMessage(msg) {
 }
 
 function removeBotMentionFromContent(content) {
+    const {nickname, firstName, lastName} = botInfo;
     return content
-        .replaceAll('@kaczkobot', '')
-        .replaceAll('@Kaczko Bot', '')
-        .replaceAll('@Kaczko', '')
+        .replaceAll(`@${nickname}`, '')
+        .replaceAll(`@${firstName} ${lastName}`, '')
+        .replaceAll(`@${firstName}`, '')
         .toLocaleLowerCase();
 }
