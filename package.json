@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "installation": "YOUTUBE_DL_SKIP_DOWNLOAD=true npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +15,7 @@
     "facebook-chat-api": "^1.8.0",
     "node-nlp": "^4.27.0",
     "wikipedia": "^2.1.0",
+    "youtube-dl-exec": "^2.4.8",
     "youtube-search-api": "^1.2.1"
   }
 }

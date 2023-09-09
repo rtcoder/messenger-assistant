@@ -2,6 +2,9 @@ const sendMsg = require('../utils/send-msg');
 const youtubedl = require('youtube-dl-exec');
 const {getDb, setDbKeyValue} = require('../utils/db');
 const {getRandomString} = require('../utils/string-helpers');
+const getConfig = require('../utils/config');
+const config = getConfig('config');
+const linksDb = getDb('links');
 
 module.exports = {
     yt_dlp: async (cmd, messageContent, api, msg) => {
@@ -34,7 +37,6 @@ module.exports = {
                     return current.quality > best.quality ? current : best;
                 }, formats[0]);
 
-                const linksDb = getDb('links');
                 const found = Object.keys(linksDb).find(key => {
                     return linksDb[key].url === bestVideo.url;
                 });
@@ -49,7 +51,7 @@ module.exports = {
                     url = newKey;
                 }
 
-                sendMsg(api, msg.threadID, url);
+                sendMsg(api, msg.threadID, `${config.domain}link/${url}`);
             });
 
             return new Promise((resolve, reject) => {

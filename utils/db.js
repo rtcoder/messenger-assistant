@@ -1,25 +1,33 @@
 const {readFileSync, writeFileSync} = require('fs');
 
+function getDb(file) {
+    return JSON.parse(readFileSync(`${__dirname}/../db/${file}.json`, 'utf-8'));
+}
+
+function getDbValue(file, key) {
+    const db = getDb(file);
+    return db[key] || null;
+}
+
+function setDbKeyValue(file, key, value) {
+    const db = getDb(file);
+    db[key] = value;
+    setDbValue(file, db);
+}
+
+function setDbValue(file, value) {
+    try {
+        writeFileSync(`${__dirname}/../db/${file}.json`, JSON.stringify(value));
+        return true;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
+
 module.exports = {
-    getDb: (file) => {
-        return JSON.parse(readFileSync(`${__dirname}/../db/${file}.json`, 'utf-8'));
-    },
-    getDbValue: (file, key) => {
-        const db = this.getDb(file);
-        return db[key] || null;
-    },
-    setDbKeyValue: (file, key, value) => {
-        const db = this.getDb(file);
-        db[key] = value;
-        this.setDbValue(file, db);
-    },
-    setDbValue: (file, value) => {
-        try {
-            writeFileSync(`${__dirname}/../db/${file}.json`, JSON.stringify(value));
-            return true;
-        } catch (err) {
-            console.error(err);
-            return false;
-        }
-    },
+    getDb,
+    getDbValue,
+    setDbKeyValue,
+    setDbValue,
 };
