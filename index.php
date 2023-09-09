@@ -1,5 +1,4 @@
 <?php
-echo __DIR__;
 $path = $_SERVER['REQUEST_URI'];
 
 $parts = array_values(
