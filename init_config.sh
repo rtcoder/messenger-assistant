@@ -11,5 +11,5 @@ if [ ! -f db/bot-info.json ]; then
 fi
 
 if [ ! -f db/links.json ]; then
-  echo "[]" >db/links.json
+  echo "{}" >db/links.json
 fi
