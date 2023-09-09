@@ -17,6 +17,7 @@ if ($parts[0] === 'link') {
             header('Location: ' . $url);
             exit();
         }
+        require_once 'views/404.html';
     } catch (Throwable $exception) {
         require_once 'views/404.html';
     }
