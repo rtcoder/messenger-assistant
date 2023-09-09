@@ -20,7 +20,7 @@ module.exports = {
             ].join(' ');
 
             exec(
-                `yt-dlp ${messageContent} ${args}`,
+                `yt-dlp "${messageContent}" ${args}`,
                 (error, stdout, stderr) => {
                     if (error) {
                         console.log(`error: ${error.message}`);
