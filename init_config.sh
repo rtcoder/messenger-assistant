@@ -10,6 +10,6 @@ if [ ! -f db/bot-info.json ]; then
   cat ./templates/db/bot-info.json.tpl >>db/bot-info.json
 fi
 
-if [ ! -f db/list.json ]; then
-  echo "[]" >db/list.json
+if [ ! -f db/links.json ]; then
+  echo "[]" >db/links.json
 fi
