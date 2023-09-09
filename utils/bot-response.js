@@ -1,6 +1,6 @@
 const serviceGuesser = require('../services/_service-guess');
 const getConfig = require('./config');
-const getDb = require('./db');
+const {getDb} = require('./db');
 const sendMsg = require('./send-msg');
 
 const config = getConfig('config');
