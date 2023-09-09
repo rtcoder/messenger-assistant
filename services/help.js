@@ -41,7 +41,10 @@ lub odpisz na wiadomość oznaczając bota i wpisując
 Zmiana nazwy grupy:
 [title]Nowa nazwa
 
-polecenia można łączyć np:
+Pobieranie z Youtube:
+[pobierz]Link do YT
+
+niektóre polecenia można łączyć np:
 [translate_de:summarize:wiki]Andrzej Duda
 1. znajdzie w Wikipedii hasło "Andrzej Duda"
 2. zrobi podsumowanie treści
