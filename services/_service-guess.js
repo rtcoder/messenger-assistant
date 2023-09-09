@@ -7,6 +7,7 @@ const {is_translate, translate_text} = require('./translate');
 const {user_call} = require('./user-call');
 const {group_title} = require('./group_title');
 const sendMsg = require('../utils/send-msg');
+const {yt_dlp} = require('./yt-dlp');
 
 const defaultFn = async (command, content, api, message) => {
 
@@ -30,6 +31,7 @@ const commandsMapToServices = {
     'call_girls': user_call,
     'call_boys': user_call,
     'call_admin': user_call,
+    'pobierz': yt_dlp,
 };
 
 module.exports = async (message, api) => {

@@ -1,4 +1,5 @@
 {
+  "domain": "",
   "allow_private_messages": true,
   "bot_response_prefix": "[BOT]: ",
   "bot_user_id": "",
