@@ -1,7 +1,6 @@
-module.exports = {
-    help: async () => {
-        return new Promise((resolve, reject) => {
-            resolve(`
+const sendMsg = require('../utils/send-msg');
+
+const HELP_TEXT = `
 Oznacz bota przy pomocy @
 Pomoc:
 [help]
@@ -14,34 +13,46 @@ Oznaczenie członków grupy:
 [call_admin] - administratorzy
 
 Youtube: 
-yt:szukana fraza
-youtube:szukana fraza
+[yt]szukana fraza
+[youtube]szukana fraza
 
 Wikipedia:
-wiki:hasło
+[wiki]hasło
 
 Przywitanie:
-cześć
-witaj
-siema
-hej
+[cześć]
+[witaj]
+[siema]
+[hej]
 
 Streszczenie tekstu:
-summarize:Długi tekst
+[summarize]Długi tekst
 lub odpisz na długą wiadomość oznaczając bota i wpisując
-summarize:
+[summarize]
 
 Tłumaczenie:
-translate_[język]:Tekst
-np translate_pl:Tekst
-translate_en:Tekst
-translate_de:Tekst
+[translate_język]Tekst
+np [translate_pl]Tekst
+[translate_en]Tekst
+[translate_de]Tekst
 lub odpisz na wiadomość oznaczając bota i wpisując
-translate_[język]:
+[translate_język]
 
 Zmiana nazwy grupy:
-title:Nowa nazwa
-            `);
-        });
+[title]Nowa nazwa
+
+polecenia można łączyć np:
+[translate_de:summarize:wiki]Andrzej Duda
+1. znajdzie w Wikipedii hasło "Andrzej Duda"
+2. zrobi podsumowanie treści
+3. przetłumaczy na język niemiecki
+
+`;
+
+module.exports = {
+    help: async (cmd, messageContent, api, message) => {
+        sendMsg(api, message.threadID, HELP_TEXT);
+
+        return new Promise((resolve, reject) => resolve(messageContent));
     },
 };

@@ -1,30 +1,25 @@
 const {translate} = require('@vitalets/google-translate-api');
+const sendMsg = require('../utils/send-msg');
 
 module.exports = {
-    is_translate: (msg) => {
-        const regex = /translate_[a-z]+:/gm;
-        const match = regex.exec(msg.body);
+    is_translate: (cmd) => {
+        const regex = /translate_[a-z]+/gm;
+        const match = regex.exec(cmd);
         return match !== null;
     },
-    translate_text: async (msg) => {
-        const regex = /translate_[a-z]+:/gm;
-        const match = regex.exec(msg.body);
-        let text;
+    translate_text: async (cmd, messageContent, api, msg) => {
+        const regex = /translate_[a-z]+/gm;
+        const match = regex.exec(cmd);
         let translateTo = match[0]
             .replaceAll('translate_', '')
             .replaceAll(':', '')
             .trim();
-        if (msg.messageReply?.body) {
-            text = msg.messageReply?.body;
-        } else {
-            text = msg.body.replaceAll(match[0], '');
-        }
-        return translate(text, {to: translateTo})
+        return translate(messageContent, {to: translateTo})
             .then(res => res.text)
             .catch(err => {
                 console.log(err)
                 return new Promise((resolve, reject) => {
-                    resolve('Błąd: coś się zepsuło...');
+                    resolve(`[${cmd}] Błąd: coś się zepsuło...`);
                 });
             });
     },

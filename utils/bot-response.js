@@ -14,20 +14,33 @@ module.exports = (api, message) => {
         return;
     }
 
-    const content = removeBotMentionFromContent(message.body);
-    const formattedMessage = {
-        ...message,
-        body: content,
-    };
-    // console.log(message);
-    const service = serviceGuesser(formattedMessage);
-    service(formattedMessage, api).then(msg => {
-        if (msg !== null) {
+    const formattedMessage = clearMsgContent(message);
+
+    const services = serviceGuesser(formattedMessage, api);
+    services.then(msg => {
+        if (isValidMessage(msg)) {
             sendMsg(api, message.threadID, msg);
         }
     });
 
 };
+
+function isValidMessage(msg) {
+    if (msg === null) {
+        return false;
+    }
+    if (typeof msg === 'string') {
+        return !!msg.length;
+    }
+    if (typeof msg === 'object') {
+        return !!Object.keys(msg).length
+            && (msg.body || msg.attachment || msg.sticker);
+    }
+    if (typeof msg === 'number') {
+        return true;
+    }
+    return false;
+}
 
 function shouldSendMessage(msg) {
     console.log(msg);
@@ -44,10 +57,28 @@ function shouldSendMessage(msg) {
         || !msg.mentions[BOT_USER_ID]);
 }
 
-function removeBotMentionFromContent(content) {
+function clearMsgContent(message) {
+    message.body = removeBotPrefixFromText(
+        removeBotMentionFromText(message.body),
+    ).trim();
+    if (message.messageReply?.body) {
+        message.messageReply.body = removeBotPrefixFromText(
+            removeBotMentionFromText(message.messageReply.body),
+        ).trim();
+    }
+
+    return message;
+}
+
+function removeBotMentionFromText(text) {
     const {nickname, firstName, lastName} = botInfo;
-    return content
+    return text
         .replaceAll(`@${nickname}`, '')
         .replaceAll(`@${firstName} ${lastName}`, '')
         .replaceAll(`@${firstName}`, '');
+}
+
+function removeBotPrefixFromText(text) {
+    return text
+        .replaceAll(BOT_PREFIX, '');
 }

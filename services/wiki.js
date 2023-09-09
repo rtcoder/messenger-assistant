@@ -1,15 +1,17 @@
+const sendMsg = require('../utils/send-msg');
 const wiki = require('wikipedia');
 
 module.exports = {
-    wiki_search: async (msg) => {
+    wiki_search: async (cmd, messageContent, api, msg) => {
         try {
-            const search = msg.body.replaceAll('wiki:', '')
             wiki.setLang('pl');
-            const page = await wiki.page(search);
+            const page = await wiki.page(messageContent);
             return await page.intro();
         } catch (error) {
+            sendMsg(api, msg.threadID, `[${cmd}] Błąd: coś się zepsuło...`);
+
             return new Promise((resolve, reject) => {
-                resolve('Błąd: coś się zepsuło...');
+                resolve(null);
             });
         }
     },

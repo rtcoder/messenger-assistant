@@ -1,15 +1,15 @@
-module.exports = {
-    is_hello: (msg) => {
-        const content = msg.body.toLocaleLowerCase();
-        return !!(content.includes('witaj')
-            || content.includes('hej')
-            || content.includes('siema')
-            || content.includes('cześć'));
+const sendMsg = require('../utils/send-msg');
 
+module.exports = {
+    is_hello: (command) => {
+        const content = command.toLocaleLowerCase();
+        return ['witaj', 'hej', 'siema', 'cześć'].includes(content);
     },
-    hello: async () => {
+    hello: async (cmd, messageContent, api, message) => {
+        sendMsg(api,message.threadID,'Cześć chuje!');
+
         return new Promise((resolve, reject) => {
-            resolve('Cześć chuje!');
+            resolve(messageContent);
         });
     },
 };

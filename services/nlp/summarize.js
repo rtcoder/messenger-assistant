@@ -1,10 +1,9 @@
 const summarizer = require('@rtcoder/simple-summary');
 
 module.exports = {
-    summarize_text: async (message) => {
-        const text = message.messageReply?.body || message.body;
+    summarize_text: async (cmd, messageContent, api, msg) => {
         return new Promise((resolve, reject) => {
-            resolve(summarizer(text));
+            resolve(summarizer(messageContent));
         });
     },
 };

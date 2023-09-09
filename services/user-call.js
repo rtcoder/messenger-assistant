@@ -1,19 +1,13 @@
 const sendMsg = require('../utils/send-msg');
 
 module.exports = {
-    is_user_call: (msg) => {
-        const content = msg.body.toLocaleLowerCase();
-        return !!(content.includes('[everyone]')
-            || content.includes('[call_all]')
-            || content.includes('[call_girls]')
-            || content.includes('[call_boys]')
-            || content.includes('[call_admin]'));
-
-    },
-    user_call: async (msg, api) => {
+    user_call: async (cmd, messageContent, api, msg) => {
         if (!msg.isGroup) {
+            sendMsg(api, msg.threadID,
+                `[${cmd}] Ta funkcja jest dostępna tylko dla konwersacji grupowych`);
+
             return new Promise((resolve, reject) => {
-                resolve('Ta funkcja jest dostępna tylko dla konwersacji grupowych');
+                resolve(messageContent);
             });
         }
 
@@ -21,15 +15,15 @@ module.exports = {
 
         api.getThreadInfo(msg.threadID, (err, info) => {
             const content = msg.body.toLocaleLowerCase();
-            if (content.includes('[everyone]')
-                || content.includes('[call_all]')
-                || content.includes('[call_girls]')
-                || content.includes('[call_boys]')) {
+            if (cmd === 'everyone'
+                || cmd === 'call_all'
+                || cmd === 'call_girls'
+                || cmd === 'call_boys') {
                 ids.push(
                     ...info.participantIDs,
                 );
             }
-            if (content.includes('[call_admin]')) {
+            if (cmd === 'call_admin') {
                 ids.push(
                     ...info.adminIDs.map(admin => admin.id),
                 );
@@ -37,10 +31,10 @@ module.exports = {
 
             getUsersInfo(ids, api, (users) => {
                 let list = users;
-                if (content.includes('[call_girls]')) {
+                if (cmd === 'call_girls') {
                     list = users.filter(u => u.gender === 1);
                 }
-                if (content.includes('[call_boys]')) {
+                if (cmd === 'call_boys') {
                     list = users.filter(u => u.gender === 2);
                 }
                 const mentions = list.map(user => {
@@ -59,7 +53,7 @@ module.exports = {
 
 
         return new Promise((resolve, reject) => {
-            resolve(null);
+            resolve(messageContent);
         });
     },
 };
