@@ -1,10 +1,6 @@
 const sendMsg = require('../utils/send-msg');
-const {getDb, setDbKeyValue} = require('../utils/db');
-const {getRandomString} = require('../utils/string-helpers');
-const getConfig = require('../utils/config');
-const config = getConfig('config');
-const linksDb = getDb('links');
 const {exec} = require('child_process');
+const {putLink} = require('../utils/link-generator');
 
 module.exports = {
     yt_dlp: async (cmd, messageContent, api, msg) => {
@@ -45,21 +41,9 @@ module.exports = {
                         return current.quality > best.quality ? current : best;
                     }, formats[0]);
 
-                    const found = Object.keys(linksDb).find(key => {
-                        return linksDb[key].url === bestVideo.url;
-                    });
-                    let url;
-                    if (found) {
-                        url = found;
-                    } else {
-                        const newKey = getRandomString();
-                        setDbKeyValue('links', newKey, {
-                            url: bestVideo.url,
-                        });
-                        url = newKey;
-                    }
+                    const link = putLink(bestVideo.url);
 
-                    sendMsg(api, msg.threadID, `${config.domain}link/${url}`);
+                    sendMsg(api, msg.threadID, `${link}`);
                 });
 
             return new Promise((resolve, reject) => {
