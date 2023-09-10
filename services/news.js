@@ -10,7 +10,7 @@ module.exports = {
         const geo = await news.geo(messageContent, opt);
         const val=geo.map(v=>{
             return `${v.title}\n${putLink(v.link)}`
-        }).join('\n');
+        }).join('\n\n');
         return new Promise((resolve, reject) => {
             resolve(val);
         });
