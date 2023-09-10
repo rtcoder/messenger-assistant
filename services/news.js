@@ -7,7 +7,7 @@ module.exports = {
 
     get_news: async (cmd, messageContent, api, msg) => {
         const opt = {language: 'pl', country: 'pl', n: 5};
-        const geo = await news.geo(messageContent, opt);
+        const geo = await news.search(messageContent, opt);
         const val=geo.map(v=>{
             return `${v.title}\n${putLink(v.link)}`
         }).join('\n\n');

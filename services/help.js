@@ -44,6 +44,9 @@ Zmiana nazwy grupy:
 Pobieranie z Youtube:
 [pobierz]Link do YT
 
+Wiadomości:
+[news]Szukana fraza (opcjonalnie)
+
 niektóre polecenia można łączyć np:
 [translate_de:summarize:wiki]Andrzej Duda
 1. znajdzie w Wikipedii hasło "Andrzej Duda"
