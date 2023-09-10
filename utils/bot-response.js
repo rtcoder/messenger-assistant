@@ -36,21 +36,20 @@ function isValidMessage(msg) {
         return !!Object.keys(msg).length
             && (msg.body || msg.attachment || msg.sticker);
     }
-    if (typeof msg === 'number') {
-        return true;
-    }
-    return false;
+    return typeof msg === 'number';
+
 }
 
 function shouldSendMessage(msg) {
     console.log(msg);
+    const hasBody = msg.body || msg.messageReply?.body;
     if (config.allow_private_messages
         && msg.threadID === msg.senderID
-        && msg.body) {
+        && hasBody) {
         return true;
     }
     return !(!msg.threadID
-        || !msg.body
+        || !hasBody
         || !THREADS_IDS.includes(msg.threadID)
         || msg.senderID === BOT_USER_ID
         || !msg.mentions
