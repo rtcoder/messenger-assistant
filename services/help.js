@@ -53,6 +53,8 @@ niektóre polecenia można łączyć np:
 `;
 
 module.exports = {
+    is_help: cmd => cmd === 'help',
+
     help: async (cmd, messageContent, api, message) => {
         sendMsg(api, message.threadID, HELP_TEXT);
 

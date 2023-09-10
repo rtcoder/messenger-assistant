@@ -3,6 +3,8 @@ const {exec} = require('child_process');
 const {putLink} = require('../utils/link-generator');
 
 module.exports = {
+    is_yt_dlp: cmd => cmd === 'pobierz',
+
     yt_dlp: async (cmd, messageContent, api, msg) => {
         try {
             const args = [

@@ -1,6 +1,8 @@
 const ytSearchApi = require('youtube-search-api');
 
 module.exports = {
+    is_yt_search:cmd=>['yt','youtube'].includes(cmd),
+
     yt_search: async (cmd, messageContent, api, msg) => {
 
         return await ytSearchApi.GetListByKeyword(messageContent, false, 5)

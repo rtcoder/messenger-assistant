@@ -1,13 +1,17 @@
-const {wiki_search} = require('./wiki');
-const {yt_search} = require('./yt');
-const {is_hello, hello} = require('./hello');
-const {summarize_text} = require('./nlp/summarize');
-const {help} = require('./help');
-const {is_translate, translate_text} = require('./translate');
-const {user_call} = require('./user-call');
-const {group_title} = require('./group_title');
 const sendMsg = require('../utils/send-msg');
-const {yt_dlp} = require('./yt-dlp');
+const {
+    is_wiki_search,
+    is_group_title, group_title,
+    is_user_call, user_call,
+    help, is_help,
+    is_news, get_news,
+    translate_text, is_translate,
+    is_hello, hello,
+    is_yt_search, yt_search,
+    yt_dlp, is_yt_dlp,
+    summarize_text, is_summarize,
+} = require('./index');
+const {wiki_search} = require('./wiki');
 
 const defaultFn = async (command, content, api, message) => {
 
@@ -19,20 +23,18 @@ const defaultFn = async (command, content, api, message) => {
     });
 };
 
-const commandsMapToServices = {
-    'help': help,
-    'youtube': yt_search,
-    'yt': yt_search,
-    'wiki': wiki_search,
-    'summarize': summarize_text,
-    'title': group_title,
-    'everyone': user_call,
-    'call_all': user_call,
-    'call_girls': user_call,
-    'call_boys': user_call,
-    'call_admin': user_call,
-    'pobierz': yt_dlp,
-};
+const checks = [
+    {check: is_help, fn: help},
+    {check: is_yt_search, fn: yt_search},
+    {check: is_wiki_search, fn: wiki_search},
+    {check: is_summarize, fn: summarize_text},
+    {check: is_group_title, fn: group_title},
+    {check: is_user_call, fn: user_call},
+    {check: is_yt_dlp, fn: yt_dlp},
+    {check: is_news, fn: get_news},
+    {check: is_hello, fn: hello},
+    {check: is_translate, fn: translate_text},
+];
 
 module.exports = async (message, api) => {
     let [commands, contentWithoutCommands] = getCommandsFromMessage(message.body);
@@ -44,13 +46,9 @@ module.exports = async (message, api) => {
     for (let idx in commands) {
         const cmd = commands[idx];
         let fn = defaultFn;
-
-        if (is_hello(cmd)) {
-            fn = hello;
-        } else if (is_translate(cmd)) {
-            fn = translate_text;
-        } else if (commandsMapToServices[cmd]) {
-            fn = commandsMapToServices[cmd];
+        fn = checks.find(({check}) => check(cmd))?.fn;
+        if (!fn) {
+            fn = defaultFn;
         }
         const messageContentArg = (+idx) === 0
             ? contentWithoutCommands

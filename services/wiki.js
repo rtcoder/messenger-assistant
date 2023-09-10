@@ -2,6 +2,8 @@ const sendMsg = require('../utils/send-msg');
 const wiki = require('wikipedia');
 
 module.exports = {
+    is_wiki_search: cmd => cmd === 'wiki',
+
     wiki_search: async (cmd, messageContent, api, msg) => {
         try {
             wiki.setLang('pl');

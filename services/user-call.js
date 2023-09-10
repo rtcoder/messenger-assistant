@@ -1,6 +1,14 @@
 const sendMsg = require('../utils/send-msg');
 
 module.exports = {
+    is_user_call: cmd => [
+        'everyone',
+        'call_all',
+        'call_girls',
+        'call_boys',
+        'call_admin',
+    ].includes(cmd),
+
     user_call: async (cmd, messageContent, api, msg) => {
         if (!msg.isGroup) {
             sendMsg(api, msg.threadID,
