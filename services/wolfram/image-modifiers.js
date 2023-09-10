@@ -1,5 +1,6 @@
 const sharp = require('sharp');
 const fs = require('fs');
+const gm = require('gm');
 
 async function enlargeImage(inputPath, outputPath) {
     try {
