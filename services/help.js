@@ -13,11 +13,11 @@ Oznaczenie członków grupy:
 [call_admin] - administratorzy
 
 Youtube: 
-[yt]szukana fraza
-[youtube]szukana fraza
+[yt] szukana fraza
+[youtube] szukana fraza
 
 Wikipedia:
-[wiki]hasło
+[wiki] hasło
 
 Przywitanie:
 [cześć]
@@ -26,29 +26,41 @@ Przywitanie:
 [hej]
 
 Streszczenie tekstu:
-[summarize]Długi tekst
+[summarize] Długi tekst
 lub odpisz na długą wiadomość oznaczając bota i wpisując
 [summarize]
 
 Tłumaczenie:
-[translate_język]Tekst
-np [translate_pl]Tekst
-[translate_en]Tekst
-[translate_de]Tekst
+[translate_język] Tekst
+np [translate_pl] Tekst
+[translate_en] Tekst
+[translate_de] Tekst
 lub odpisz na wiadomość oznaczając bota i wpisując
 [translate_język]
 
 Zmiana nazwy grupy:
-[title]Nowa nazwa
+[title] Nowa nazwa
 
 Pobieranie z Youtube:
-[pobierz]Link do YT
+[pobierz] Link do YT
 
 Wiadomości:
-[news]Szukana fraza (opcjonalnie)
+[news] Szukana fraza (opcjonalnie)
+
+Obliczenia:
+[licz] Działanie
+np:
+[licz] x^2 - 4x + 4 < 4
+
+Zadania:
+// [zadanie]
+[przypomnij|czas] Treść 
+np:
+[przypomnij|2h 30m] Spotkanie
+Wyśle wiadomość po 2.5h o treści "Spotkanie"
 
 niektóre polecenia można łączyć np:
-[translate_de:summarize:wiki]Andrzej Duda
+[translate_de:summarize:wiki] Andrzej Duda
 1. znajdzie w Wikipedii hasło "Andrzej Duda"
 2. zrobi podsumowanie treści
 3. przetłumaczy na język niemiecki

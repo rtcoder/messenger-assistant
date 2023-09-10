@@ -1,7 +1,7 @@
 const {readFileSync, writeFileSync} = require('fs');
 
 function getDb(file) {
-    return JSON.parse(readFileSync(`${__dirname}/../db/${file}.json`, 'utf-8'));
+    return JSON.parse(readFileSync(`${__basedir}/db/${file}.json`, 'utf-8'));
 }
 
 function getDbValue(file, key) {
@@ -17,7 +17,11 @@ function setDbKeyValue(file, key, value) {
 
 function setDbValue(file, value) {
     try {
-        writeFileSync(`${__dirname}/../db/${file}.json`, JSON.stringify(value));
+        writeFileSync(
+            `${__basedir}/db/${file}.json`,
+            JSON.stringify(value),
+            'utf8'
+        );
         return true;
     } catch (err) {
         console.error(err);

@@ -16,6 +16,7 @@
     "gnews": "^1.0.3",
     "join-images": "^1.1.5",
     "node-nlp": "^4.27.0",
+    "node-schedule": "^2.1.1",
     "node-wolfram-alpha": "^1.2.5",
     "sharp": "^0.32.5",
     "wikipedia": "^2.1.0",

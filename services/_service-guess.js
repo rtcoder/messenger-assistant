@@ -11,6 +11,7 @@ const {
     yt_dlp, is_yt_dlp,
     summarize_text, is_summarize,
     is_wolfram, run_wolfram,
+    is_set_job, set_job
 } = require('./index');
 const {wiki_search} = require('./wiki');
 
@@ -36,6 +37,7 @@ const checks = [
     {check: is_hello, fn: hello},
     {check: is_translate, fn: translate_text},
     {check: is_wolfram, fn: run_wolfram},
+    {check: is_set_job, fn: set_job},
 ];
 
 module.exports = async (message, api) => {
@@ -64,7 +66,7 @@ module.exports = async (message, api) => {
 };
 
 function getCommandsFromMessage(messageStr) {
-    const regex = /^\[[a-z0-9:_]+\]/gmi;
+    const regex = /^\[[a-z0-9:_\|\s]+\]/gmi;
     const match = regex.exec(messageStr);
     console.log(messageStr, regex, match);
     if (match === null) {

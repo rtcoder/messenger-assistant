@@ -13,3 +13,7 @@ fi
 if [ ! -f db/links.json ]; then
   echo "{}" >db/links.json
 fi
+
+if [ ! -f db/jobs.json ]; then
+  echo "{}" >db/jobs.json
+fi

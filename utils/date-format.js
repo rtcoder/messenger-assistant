@@ -18,7 +18,5 @@ function getDateFormat(format, timestamp) {
 
     return format;
 }
-console.log(
-    getDateFormat('yyyy-MM-dd HH:mm:ss', 1696972042793),
-    getDateFormat('yyyy-MM-dd HH:mm:ss', 1694380320011),
-)
+
+module.exports = getDateFormat;
