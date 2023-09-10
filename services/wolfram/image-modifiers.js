@@ -60,7 +60,7 @@ function combineImagesAndText(title, files, outputPath, callback) {
                 // Dodaj tytuł nad obrazkiem wynikowym
                 combinedImage = combinedImage.gravity('North');
                 combinedImage = combinedImage.fontSize(24);
-                combinedImage = combinedImage.drawText(0, spacerHeight / 2, title);
+                combinedImage = combinedImage.drawText(0, spacerHeight, title);
                 combinedImage.write(outputPath, (writeError) => {
                     if (writeError) {
                         console.error('Błąd zapisu obrazka wynikowego.');
