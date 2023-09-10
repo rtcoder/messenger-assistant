@@ -9,11 +9,8 @@ module.exports = {
         const opt = {language: 'pl', country: 'pl', n: 5};
         const geo = await news.geo(messageContent, opt);
         const val=geo.map(v=>{
-            return `
-            ${v.title}
-            ${putLink(v.link)}
-            `
-        }).join('\n\n');
+            return `${v.title}\n${putLink(v.link)}`
+        }).join('\n');
         return new Promise((resolve, reject) => {
             resolve(val);
         });
