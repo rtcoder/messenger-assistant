@@ -9,6 +9,7 @@ const {is_wiki_search} = require('./wiki');
 const {yt_search, is_yt_search} = require('./yt');
 const {is_yt_dlp, yt_dlp} = require('./yt-dlp');
 const {is_summarize, summarize_text} = require('./nlp/summarize');
+const {is_wolfram, run_wolfram} = require('./wolfram/wolfram');
 module.exports = {
     help,
     is_help,
@@ -29,5 +30,7 @@ module.exports = {
     yt_dlp,
     is_yt_dlp,
     is_summarize,
-    summarize_text
+    summarize_text,
+    is_wolfram,
+    run_wolfram,
 };

@@ -19,7 +19,7 @@ module.exports = (api, message) => {
     const services = serviceGuesser(formattedMessage, api);
     services.then(msg => {
         if (isValidMessage(msg)) {
-            sendMsg(api, message.threadID, msg);
+            sendMsg(api, message.threadID, msg, null, message.messageID);
         }
     });
 
@@ -60,6 +60,11 @@ function clearMsgContent(message) {
     message.body = removeBotPrefixFromText(
         removeBotMentionFromText(message.body),
     ).trim();
+    if (message.body) {
+        message.body = removeBotPrefixFromText(
+            removeBotMentionFromText(message.body),
+        ).trim();
+    }
     if (message.messageReply?.body) {
         message.messageReply.body = removeBotPrefixFromText(
             removeBotMentionFromText(message.messageReply.body),

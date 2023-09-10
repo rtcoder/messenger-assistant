@@ -10,6 +10,7 @@ const {
     is_yt_search, yt_search,
     yt_dlp, is_yt_dlp,
     summarize_text, is_summarize,
+    is_wolfram, run_wolfram,
 } = require('./index');
 const {wiki_search} = require('./wiki');
 
@@ -34,6 +35,7 @@ const checks = [
     {check: is_news, fn: get_news},
     {check: is_hello, fn: hello},
     {check: is_translate, fn: translate_text},
+    {check: is_wolfram, fn: run_wolfram},
 ];
 
 module.exports = async (message, api) => {
