@@ -54,13 +54,13 @@ np:
 
 Zadania:
 // [zadanie]
-[przypomnij|czas] Treść 
+[przypomnij:czas] Treść 
 np:
-[przypomnij|2h 30m] Spotkanie
+[przypomnij:2h 30m] Spotkanie
 Wyśle wiadomość po 2.5h o treści "Spotkanie"
 
 niektóre polecenia można łączyć np:
-[translate_de:summarize:wiki] Andrzej Duda
+[translate_de|summarize|wiki] Andrzej Duda
 1. znajdzie w Wikipedii hasło "Andrzej Duda"
 2. zrobi podsumowanie treści
 3. przetłumaczy na język niemiecki

@@ -75,7 +75,7 @@ function getCommandsFromMessage(messageStr) {
     const commands = match[0]
         .replaceAll('[', '')
         .replaceAll(']', '')
-        .split(':')
+        .split('|')
         .reverse();
 
     const contentWithoutCommands = messageStr.replaceAll(match[0], '').trim();

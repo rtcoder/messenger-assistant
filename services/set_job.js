@@ -7,7 +7,7 @@ function isReminder(cmd) {
 }
 
 function getReminderTimeTimestamp(cmd) {
-    const timeStr = cmd.split('|')[1];
+    const timeStr = cmd.split(':')[1];
 
     const now = new Date();
     timeStr.split(' ').forEach(val => {
@@ -23,7 +23,7 @@ function getReminderTimeTimestamp(cmd) {
         } else if (val.endsWith('y')) {
             now.setFullYear(now.getFullYear() + numericValue);
         } else if (val.endsWith('m')) {
-            now.setMonth(now.getMonth()-1 + numericValue);
+            now.setMonth(now.getMonth() - 1 + numericValue);
         } else if (val.endsWith('d')) {
             now.setDate(now.getDate() + numericValue);
         }
@@ -31,12 +31,48 @@ function getReminderTimeTimestamp(cmd) {
     return now.getTime();
 }
 
+function parseInterval(input) {
+    const regex = /^every:(\d+)(min|h|day|month|year)$/;
+    const dayOfWeekRegex = /^every:(\w+) (\d{1,2}:\d{2}[APap][Mm])$/;
+
+    const minutesMatch = input.match(regex);
+    const dayOfWeekMatch = input.match(dayOfWeekRegex);
+
+    if (minutesMatch) {
+        const [, value, unit] = minutesMatch;
+        const parsedValue = parseInt(value);
+        if (!isNaN(parsedValue)) {
+            switch (unit) {
+                case 'min':
+                    return `*/${parsedValue} * * * *`;
+                case 'h':
+                    return `0 */${parsedValue} * * *`;
+                case 'day':
+                    return `0 0 */${parsedValue} * *`;
+                case 'month':
+                    return `0 0 1 */${parsedValue} *`;
+                case 'year':
+                    return `0 0 1 1 */${parsedValue}`;
+                default:
+                    return null; // Nieprawidłowa jednostka czasu
+            }
+        }
+    } else if (dayOfWeekMatch) {
+        const [, dayOfWeek, time] = dayOfWeekMatch;
+        if (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].includes(dayOfWeek)) {
+            return `0 ${time.replace(':', ' ')} * * ${dayOfWeek.substring(0, 3)}`;
+        }
+    }
+
+    return null; // Nieprawidłowy format
+}
+
 module.exports = {
     is_set_job: (cmd) => {
         if (cmd === 'zadanie') {
             return true;
         }
-        const regex = /przypomnij|[a-z0-9\s]+/gm;
+        const regex = /przypomnij:[a-z0-9\s]+/gm;
         const match = regex.exec(cmd);
         return match !== null;
     },
