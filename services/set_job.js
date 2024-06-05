@@ -34,9 +34,11 @@ function getReminderTimeTimestamp(cmd) {
 function parseInterval(input) {
     const regex = /^every:(\d+)(min|h|day|month|year)$/;
     const dayOfWeekRegex = /^every:(\w+) (\d{1,2}:\d{2}[APap][Mm])$/;
+    const dailyRegex = /^every:day (\d{1,2}:\d{2}[APap][Mm])$/;
 
     const minutesMatch = input.match(regex);
     const dayOfWeekMatch = input.match(dayOfWeekRegex);
+    const dailyMatch = input.match(dailyRegex);
 
     if (minutesMatch) {
         const [, value, unit] = minutesMatch;
@@ -62,6 +64,9 @@ function parseInterval(input) {
         if (['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].includes(dayOfWeek)) {
             return `0 ${time.replace(':', ' ')} * * ${dayOfWeek.substring(0, 3)}`;
         }
+    } else if (dailyMatch) {
+        const [, time] = dailyMatch;
+        return `0 ${time.replace(':', ' ')} * * *`;
     }
 
     return null; // Nieprawidłowy format

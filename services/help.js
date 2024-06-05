@@ -53,7 +53,16 @@ np:
 [licz] x^2 - 4x + 4 < 4
 
 Zadania:
-// [zadanie]
+[every:czas] Treść
+np:
+[every:4min] Co 4 minuty
+[every:1h] Co godzinę
+[every:2day] Co 2 dni
+[every:4month] Co 4 miesiące
+[every:4year] Co 4 lata
+[every:wtorek 9:00AM] W każdy wtorek o 9 rano
+[every:day 9:00AM] W każdy dzień o 9 rano
+
 [przypomnij:czas] Treść 
 np:
 [przypomnij:2h 30m] Spotkanie

@@ -10,6 +10,7 @@ const BOT_USER_ID = config.bot_user_id;
 const THREADS_IDS = config.threads_ids;
 
 module.exports = (api, message) => {
+    console.log('should send mess:',shouldSendMessage(message));
     if (!shouldSendMessage(message)) {
         return;
     }
@@ -41,7 +42,7 @@ function isValidMessage(msg) {
 }
 
 function shouldSendMessage(msg) {
-    console.log(msg);
+    console.log({msg});
     const hasBody = msg.body || msg.messageReply?.body;
     if (config.allow_private_messages
         && msg.threadID === msg.senderID

@@ -17,3 +17,7 @@ fi
 if [ ! -f db/jobs.json ]; then
   echo "{}" >db/jobs.json
 fi
+
+if [ ! -f db/circular-jobs.json ]; then
+  echo "{}" >db/circular-jobs.json
+fi
