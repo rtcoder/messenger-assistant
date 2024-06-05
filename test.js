@@ -1,24 +1,20 @@
-function getDateFormat(format, timestamp) {
-    const date = new Date(timestamp);
+function getCommandsFromMessage(messageStr) {
+    const regex = /^\[[a-z0-9:_\|\s]+\]/gmi;
+    const match = regex.exec(messageStr);
+    console.log(messageStr, regex, match);
+    if (match === null) {
+        return [[], messageStr];
+    }
+    const commands = match[0]
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .split('|')
+        .reverse();
 
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Miesiące są numerowane od 0 do 11
-    const year = date.getFullYear().toString();
+    const contentWithoutCommands = messageStr.replaceAll(match[0], '').trim();
 
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-
-    format = format.replace('dd', day);
-    format = format.replace('MM', month);
-    format = format.replace('yyyy', year);
-    format = format.replace('HH', hours);
-    format = format.replace('mm', minutes);
-    format = format.replace('ss', seconds);
-
-    return format;
+    return [commands, contentWithoutCommands];
 }
 console.log(
-    getDateFormat('yyyy-MM-dd HH:mm:ss', 1696972042793),
-    getDateFormat('yyyy-MM-dd HH:mm:ss', 1694380320011),
+    getCommandsFromMessage('[every:poniedzialek 22:00]')
 )
