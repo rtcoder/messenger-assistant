@@ -21,3 +21,4 @@ if ($parts[0] === 'link') {
         require_once 'views/404.html';
     }
 }
+require_once 'views/index.html';
