@@ -1,87 +1,18 @@
-const sendMsg = require('../utils/send-msg');
-
-const HELP_TEXT = `
-Oznacz bota przy pomocy @
-Pomoc:
-[help]
-
-Oznaczenie członków grupy:
-[everyone] - wszyscy
-[call_all] - wszyscy
-[call_boys] - mężczyźni
-[call_girls] - kobiety
-[call_admin] - administratorzy
-
-Youtube: 
-[yt] szukana fraza
-[youtube] szukana fraza
-
-Wikipedia:
-[wiki] hasło
-
-Przywitanie:
-[cześć]
-[witaj]
-[siema]
-[hej]
-
-Streszczenie tekstu:
-[summarize] Długi tekst
-lub odpisz na długą wiadomość oznaczając bota i wpisując
-[summarize]
-
-Tłumaczenie:
-[translate_język] Tekst
-np [translate_pl] Tekst
-[translate_en] Tekst
-[translate_de] Tekst
-lub odpisz na wiadomość oznaczając bota i wpisując
-[translate_język]
-
-Zmiana nazwy grupy:
-[title] Nowa nazwa
-
-Pobieranie z Youtube:
-[pobierz] Link do YT
-
-Wiadomości:
-[news] Szukana fraza (opcjonalnie)
-
-Obliczenia:
-[licz] Działanie
-np:
-[licz] x^2 - 4x + 4 < 4
-
-Zadania:
-[every:czas] Treść
-np:
-[every:4min] Co 4 minuty
-[every:1h] Co godzinę
-[every:2day] Co 2 dni
-[every:4month] Co 4 miesiące
-[every:4year] Co 4 lata
-[every:wtorek 9:00AM] W każdy wtorek o 9 rano
-[every:day 9:00AM] W każdy dzień o 9 rano
-
-[przypomnij:czas] Treść 
-np:
-[przypomnij:2h 30m] Spotkanie
-Wyśle wiadomość po 2.5h o treści "Spotkanie"
-
-niektóre polecenia można łączyć np:
-[translate_de|summarize|wiki] Andrzej Duda
-1. znajdzie w Wikipedii hasło "Andrzej Duda"
-2. zrobi podsumowanie treści
-3. przetłumaczy na język niemiecki
-
-`;
-
-module.exports = {
-    is_help: cmd => cmd === 'help',
-
-    help: async (cmd, messageContent, api, message) => {
-        sendMsg(api, message.threadID, HELP_TEXT);
-
-        return new Promise((resolve, reject) => resolve(messageContent));
-    },
-};
+const HELP_TEXT = `W grupie oznacz bota i wpisz komendę:
+[help] — pomoc
+[wiki] hasło — Wikipedia
+[yt] fraza — szukanie YouTube
+[news] fraza — wiadomości
+[summarize] tekst — lokalne streszczenie
+[translate_pl] tekst — tłumaczenie (tekst wysyłany do Google)
+[licz] działanie — Wolfram Alpha (zapytanie wysyłane do Wolframa)
+[przypomnij:2h 30m] treść — przypomnienie
+Jednostki: s, m/min, h, d/day, month, y/year. Maksymalnie 5 lat.
+[pobierz] https://youtu.be/VIDEO_ID — link do filmu; wymaga osobnego uprawnienia i włączenia funkcji
+[title] nazwa — zmiana nazwy grupy; tylko administrator bota
+[everyone], [call_all], [call_girls], [call_boys], [call_admin] — oznaczenia; tylko administrator bota, do 50 osób
+[hej], [siema], [witaj], [cześć] — przywitanie
+Możesz odpowiedzieć na wiadomość, aby użyć jej treści jako argumentu.
+Łączenie działa od prawej: [translate_de|summarize|wiki] hasło.
+Brak obsługi zadań cyklicznych. Limity mogą spowodować pominięcie nadmiarowych komend.`;
+module.exports = {is_help: cmd => cmd === 'help', help: async () => HELP_TEXT};

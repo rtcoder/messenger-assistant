@@ -1,0 +1,2 @@
+# Defence in depth for Apache deployments accidentally pointing at the repository.
+Require all denied

@@ -1,35 +1,15 @@
-if [ ! -f config/config.json ]; then
-  echo "Create config/config.json"
-  cat ./templates/config/config.json.tpl >>config/config.json
-  echo "Created."
+#!/bin/sh
+set -eu
+umask 077
+cd "$(dirname "$0")"
+config_dir="${BOT_CONFIG_DIR:-$(pwd)/config}"
+data_dir="${BOT_DATA_DIR:-$(pwd)/data}"
+mkdir -p "$config_dir" "$data_dir"
+if [ ! -f "$config_dir/config.json" ]; then
+    cp templates/config/config.json.tpl "$config_dir/config.json"
 fi
-
-if [ ! -f config/app-state ]; then
-  echo "Create config/app-state.json"
-  touch config/app-state.json
-  echo "Created."
+if [ ! -f "$config_dir/app-state.json" ]; then
+    printf '{"cookies":[]}\n' > "$config_dir/app-state.json"
 fi
-
-if [ ! -f db/bot-info.json ]; then
-  echo "Create db/bot-info.json"
-  cat ./templates/db/bot-info.json.tpl >>db/bot-info.json
-  echo "Created."
-fi
-
-if [ ! -f db/links.json ]; then
-  echo "Create db/links.json"
-  echo "{}" >db/links.json
-  echo "Created."
-fi
-
-if [ ! -f db/jobs.json ]; then
-  echo "Create db/jobs.json"
-  echo "{}" >db/jobs.json
-  echo "Created."
-fi
-
-if [ ! -f db/circular-jobs.json ]; then
-  echo "Create db/circular-jobs.json"
-  echo "{}" >db/circular-jobs.json
-  echo "Created."
-fi
+chmod 600 "$config_dir/config.json" "$config_dir/app-state.json"
+printf '%s\n' 'Configuration prepared. Fill bot_user_id, allowlists and session cookies before starting.'

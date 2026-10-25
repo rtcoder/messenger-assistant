@@ -1,12 +1,11 @@
-const botResponse = require('./bot-response');
-
-module.exports = (api) => {
-    api.setOptions({
-        listenEvents: true,
-        selfListen: true,
-    });
-    api.listenMqtt((err, message) => {
-        botResponse(api, message);
+module.exports = (api, dispatcher, logger = () => {
+}) => {
+    api.setOptions({listenEvents: false, selfListen: false, logLevel: 'silent'});
+    return api.listenMqtt((error, message) => {
+        if (error) {
+            logger('listener_error');
+            return;
+        }
+        Promise.resolve().then(() => dispatcher.handle(message)).catch(() => logger('dispatch_error'));
     });
 };
-

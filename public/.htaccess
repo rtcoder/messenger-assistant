@@ -1,0 +1,4 @@
+Require all granted
+Options -Indexes
+RewriteEngine On
+RewriteRule ^ index.php [END]

@@ -1,8 +1,22 @@
 {
-    "domain": "",
-    "wolfram_api_key": "",
-    "allow_private_messages": true,
-    "bot_response_prefix": "",
-    "bot_user_id": "",
-    "threads_ids": []
+"domain": "",
+"wolfram_api_key": "",
+"allow_private_messages": false,
+"bot_response_prefix": "",
+"bot_user_id": "",
+"threads_ids": [],
+"allowed_user_ids": [],
+"admin_user_ids": [],
+"download_user_ids": [],
+"enable_downloads": false,
+"timezone": "Europe/Warsaw",
+"max_commands": 4,
+"max_input_length": 10000,
+"concurrency": 2,
+"max_queue": 20,
+"user_rate_limit": 10,
+"global_rate_limit": 60,
+"request_timeout_ms": 20000,
+"max_pending_reminders": 1000,
+"max_user_reminders": 50
 }

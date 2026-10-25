@@ -1,0 +1,42 @@
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const {spawnSync} = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const os = require('node:os');
+test('setup creates private valid JSON and never overwrites existing sessions', t => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'messenger-setup-'));
+    t.after(() => fs.rmSync(dir, {recursive: true, force: true}));
+    const env = {...process.env, BOT_CONFIG_DIR: path.join(dir, 'config'), BOT_DATA_DIR: path.join(dir, 'data')};
+    const run = () => {
+        const result = spawnSync('sh', ['./init_config.sh'], {env, encoding: 'utf8'});
+        assert.equal(result.status, 0, result.stderr);
+    };
+    run();
+    const file = path.join(env.BOT_CONFIG_DIR, 'app-state.json');
+    assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), {cookies: []});
+    assert.equal(fs.statSync(file).mode & 0o777, 0o600);
+    fs.writeFileSync(file, '{"cookies":[{"synthetic":true}]}');
+    run();
+    assert.equal(fs.readFileSync(file, 'utf8'), '{"cookies":[{"synthetic":true}]}');
+});
+test('migration can resume and preserves originals; unsupported recurring jobs fail before import', t => {
+    const {migrate} = require('../scripts/migrate');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'messenger-migration-'));
+    t.after(() => fs.rmSync(dir, {recursive: true, force: true}));
+    const source = path.join(dir, 'legacy');
+    fs.mkdirSync(source);
+    const jobs = JSON.stringify({'1000': {threadID: '100', text: 'legacy'}});
+    fs.writeFileSync(path.join(source, 'jobs.json'), jobs);
+    const dest = path.join(dir, 'new');
+    migrate(source, dest);
+    migrate(source, dest);
+    assert.equal(fs.readFileSync(path.join(source, 'jobs.json'), 'utf8'), jobs);
+    const {Storage} = require('../utils/storage');
+    const db = new Storage(path.join(dest, 'bot.sqlite'));
+    assert.equal(db.pendingCount(), 1);
+    db.close();
+    fs.writeFileSync(path.join(source, 'circular-jobs.json'), '{"job":{"interval":"* * * * *"}}');
+    assert.throws(() => migrate(source, path.join(dir, 'blocked')));
+    assert.equal(fs.existsSync(path.join(dir, 'blocked')), false);
+});

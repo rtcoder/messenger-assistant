@@ -1,84 +1,24 @@
-const sendMsg = require('../utils/send-msg');
-const {
-    is_wiki_search,
-    is_group_title, group_title,
-    is_user_call, user_call,
-    help, is_help,
-    is_news, get_news,
-    translate_text, is_translate,
-    is_hello, hello,
-    is_yt_search, yt_search,
-    yt_dlp, is_yt_dlp,
-    summarize_text, is_summarize,
-    is_wolfram, run_wolfram,
-    is_set_job, set_job
-} = require('./index');
-const {wiki_search} = require('./wiki');
-
-const defaultFn = async (command, content, api, message) => {
-
-    sendMsg(api, message.threadID,
-        `Nie znam polecenia [${command}]. Oznacz mnie i wpisz [help] aby uzyskać pomoc.`);
-
-    return new Promise((resolve, reject) => {
-        resolve(content);
-    });
-};
-
-const checks = [
-    {check: is_help, fn: help},
-    {check: is_yt_search, fn: yt_search},
-    {check: is_wiki_search, fn: wiki_search},
-    {check: is_summarize, fn: summarize_text},
-    {check: is_group_title, fn: group_title},
-    {check: is_user_call, fn: user_call},
-    {check: is_yt_dlp, fn: yt_dlp},
-    {check: is_news, fn: get_news},
-    {check: is_hello, fn: hello},
-    {check: is_translate, fn: translate_text},
-    {check: is_wolfram, fn: run_wolfram},
-    {check: is_set_job, fn: set_job},
+const services = require('./index');
+const routes = [
+    ['is_help', 'help'], ['is_group_title', 'group_title'], ['is_hello', 'hello'],
+    ['is_news', 'get_news'], ['is_translate', 'translate_text'], ['is_user_call', 'user_call'],
+    ['is_wiki_search', 'wiki_search'], ['is_yt_search', 'yt_search'], ['is_yt_dlp', 'yt_dlp'],
+    ['is_summarize', 'summarize_text'], ['is_wolfram', 'run_wolfram'], ['is_set_job', 'set_job'],
 ];
 
-module.exports = async (message, api) => {
-    let [commands, contentWithoutCommands] = getCommandsFromMessage(message.body);
-    if (message.messageReply?.body) {
-        contentWithoutCommands = message.messageReply.body;
-    }
-
-    let newContent = '';
-    for (let idx in commands) {
-        const cmd = commands[idx];
-        let fn = defaultFn;
-        fn = checks.find(({check}) => check(cmd))?.fn;
-        if (!fn) {
-            fn = defaultFn;
+function createExecutor(api, context) {
+    return async ({commands, content}, message) => {
+        // Resolve every command first; a typo must not partially execute a pipeline.
+        const handlers = commands.map(cmd => routes.find(([check]) => services[check](cmd))?.[1]);
+        if (handlers.some(fn => !fn)) return 'Nieznane polecenie. Wpisz [help].';
+        let result = content;
+        for (let i = 0; i < commands.length; i++) {
+            if (typeof result !== 'string') throw Error('This result cannot be piped');
+            if (result.length > context.config.max_input_length) result = result.slice(0, context.config.max_input_length);
+            result = await services[handlers[i]](commands[i], result, api, message, {...context, commandIndex: i});
         }
-        const messageContentArg = (+idx) === 0
-            ? contentWithoutCommands
-            : newContent;
-        console.log({cmd, messageContentArg, idx});
-        newContent = await fn(cmd, messageContentArg, api, message);
-    }
-    return new Promise((resolve, reject) => {
-        resolve(newContent);
-    });
-};
-
-function getCommandsFromMessage(messageStr) {
-    const regex = /^\[[a-z0-9:_\|\s]+\]/gmi;
-    const match = regex.exec(messageStr);
-    console.log(messageStr, regex, match);
-    if (match === null) {
-        return [[], messageStr];
-    }
-    const commands = match[0]
-        .replaceAll('[', '')
-        .replaceAll(']', '')
-        .split('|')
-        .reverse();
-
-    const contentWithoutCommands = messageStr.replaceAll(match[0], '').trim();
-
-    return [commands, contentWithoutCommands];
+        return result;
+    };
 }
+
+module.exports = {createExecutor};

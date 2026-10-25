@@ -1,5 +1,5 @@
 {
-    "nickname": "",
-    "firstName": "",
-    "lastName": ""
+"nickname": "",
+"firstName": "",
+"lastName": ""
 }

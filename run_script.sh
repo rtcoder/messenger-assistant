@@ -1,1 +1,4 @@
-pm2 start "$(pwd)/main.js" --name messenger-assistant
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")"
+exec pm2 start ecosystem.config.js
