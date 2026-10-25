@@ -20,12 +20,26 @@ tu gwarancja bezawaryjności ani oficjalne wsparcie Meta dla tej metody.
 
 ## Instalacja
 
+Najpierw sprawdź `node --version`. Node 20 nie udostępnia wymaganego modułu
+`node:sqlite`; aktualizacja samego npm tego nie naprawia. Jeśli używasz
+[nvm](https://github.com/nvm-sh/nvm#usage), w katalogu projektu wykonaj:
+
+```sh
+nvm install
+nvm use
+node --version
+```
+
+Plik `.nvmrc` wskazuje Node 24. Bez nvm zainstaluj obsługiwaną wersję Node
+metodą właściwą dla serwera. Następnie:
+
 ```sh
 sh ./install.sh
 ```
 
-Skrypt wykonuje `npm ci --ignore-scripts`, testy, przygotowanie konfiguracji
+Skrypt sprawdza wersję Node, wykonuje `npm ci --ignore-scripts`, testy, przygotowanie konfiguracji
 oraz migrację istniejących plików JSON. Nie uruchamia bota ani nie loguje się do Facebooka.
+`.npmrc` wymusza wymagania wersji również przy bezpośrednim `npm ci`.
 Nie wykonuje samodzielnie `git pull`. Gdy instalujesz tylko proces Node bez PHP,
 użyj `npm ci --ignore-scripts` i `sh ./init_config.sh`; pełne testy uruchom w CI.
 
@@ -40,6 +54,10 @@ npm start
 
 Alternatywnie `sh ./run_script.sh` uruchamia skonfigurowany PM2. Konfiguracja PM2
 ogranicza restarty i pamięć. Nie uruchamiaj jednocześnie PM2 i systemd.
+Po zmianie Node sprawdź też interpreter procesu: `nvm use` dotyczy bieżącej
+powłoki, nie działającego demona PM2 ani usługi systemd. W systemd ustaw
+`ExecStart` na właściwy plik Node, a w PM2 skonfiguruj `interpreter` na jego
+pełną ścieżkę (otrzymasz ją przez `command -v node` po przełączeniu wersji).
 Przy błędzie startu log zawiera tylko `startup_failed`, bez sekretów. Sprawdź
 najpierw składnię JSON, wymagane ID, uprawnienia pliku i ważność cookies.
 

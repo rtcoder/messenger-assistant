@@ -1,3 +1,4 @@
+require('./check-runtime');
 const fs = require('node:fs');
 const path = require('node:path');
 const {Storage} = require('../utils/storage');
